@@ -60,7 +60,7 @@ function BookMore({ bookData }) {
       <BookContent>
         <BookImageContainer>
           <a href={canonicalVolumeLink}>
-            <img src={imageLinks?.thumbnail} />
+            <img src={imageLinks?.thumbnail} alt="book thumbnail" />
           </a>
         </BookImageContainer>
         <BookInfo>
