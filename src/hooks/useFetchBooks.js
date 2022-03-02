@@ -9,26 +9,35 @@ function useFetchBooks(query = "javascript") {
     const controller = new AbortController();
     const { signal } = controller;
 
-    fetch(`${process.env.REACT_APP_API_URL}/volumes?q=${query}`, { signal })
-      .then((res) => res.json())
-      .then((json) => {
+    async function fetchBooks() {
+      try {
+        setIsLoading(true);
+
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/volumes?q=${query}`,
+          { signal }
+        );
+        const json = await response.json();
+
         setIsLoading(false);
-        if (json.totalItems !== 0) {
-          setBooks(json.items);
-        } else {
-          console.log(query);
+
+        if (json.totalItems === 0) {
           setError("book not found");
+        } else {
+          setBooks(json.items);
         }
-      })
-      .catch((err) => {
+      } catch {
         setIsLoading(false);
-        setError(err);
-      });
+        throw new Error("Something went wrong while fetching books");
+      }
+    }
+
+    fetchBooks();
 
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [query]);
 
   return {
     isLoading,
