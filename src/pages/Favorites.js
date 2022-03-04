@@ -1,9 +1,10 @@
 import withLayout from "../HOC/withLayout";
-import useFavorites from "../hooks/useFavorites";
 import BookCard from "../components/BookCard";
+import useBooks from "../hooks/useBooks";
 
 function Favorites() {
-  const { favorites } = useFavorites();
+  const { bookStore } = useBooks();
+  const favorites = bookStore.books.filter((item) => item.isFav);
 
   const isFavorites = favorites.length === 0;
 

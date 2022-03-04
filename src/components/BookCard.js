@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import arrayToList from "../utils/arrayToList";
-import useFavorites from "../hooks/useFavorites";
+import useBooks from "../hooks/useBooks";
 
 const CardLayout = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const Button = styled.a`
 `;
 
 function BookCard({ bookData }) {
-  const { id, searchInfo, volumeInfo } = bookData;
+  const { id, searchInfo, volumeInfo, isFav } = bookData;
 
   const {
     title,
@@ -74,10 +74,10 @@ function BookCard({ bookData }) {
     industryIdentifiers,
   } = volumeInfo;
 
-  const { favorites, favoritesDispatch } = useFavorites();
+  const { booksDispatch } = useBooks();
 
   const bookId = industryIdentifiers[0].identifier;
-  const isFavorite = favorites.some((item) => item.id === id);
+  const isFavorite = isFav;
 
   return (
     <CardLayout>
@@ -104,10 +104,10 @@ function BookCard({ bookData }) {
           <div>
             <Button
               onClick={() =>
-                favoritesDispatch(
+                booksDispatch(
                   isFavorite
                     ? { type: "REMOVE", payload: id }
-                    : { type: "ADD", payload: bookData }
+                    : { type: "ADD", payload: id }
                 )
               }
             >

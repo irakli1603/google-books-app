@@ -36,8 +36,6 @@ const PublishInfo = styled.div`
 const Rating = styled.div``;
 
 function BookMore({ bookData }) {
-  console.log(bookData);
-
   const { volumeInfo } = bookData;
 
   const {

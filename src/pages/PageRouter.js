@@ -1,13 +1,13 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Book from "./Book";
 import Favorites from "./Favorites";
-import FavoritesProvider from "../providers/FavoritesProvider";
 import Navbar from "../components/Navbar";
+import BooksProvider from "../providers/BooksProvider";
 
 function PageRouter() {
   return (
-    <FavoritesProvider>
+    <BooksProvider>
       <Router>
         <Navbar />
         <Routes>
@@ -17,7 +17,7 @@ function PageRouter() {
           <Route path="/book/:id" element={<Book />} />
         </Routes>
       </Router>
-    </FavoritesProvider>
+    </BooksProvider>
   );
 }
 

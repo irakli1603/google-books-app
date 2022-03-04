@@ -1,9 +1,12 @@
 import withLayout from "../HOC/withLayout";
 import BookCard from "../components/BookCard";
-import useFetchBooks from "../hooks/useFetchBooks";
+import useBooks from "../hooks/useBooks";
 
 function Home() {
-  const { isLoading, books } = useFetchBooks();
+  const { bookStore } = useBooks();
+  const { isLoading, books } = bookStore;
+
+  console.log(bookStore);
 
   return (
     <div>
