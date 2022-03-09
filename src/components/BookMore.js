@@ -36,8 +36,6 @@ const PublishInfo = styled.div`
 const Rating = styled.div``;
 
 function BookMore({ bookData }) {
-  console.log(bookData);
-
   const { volumeInfo } = bookData;
 
   const {
@@ -60,7 +58,7 @@ function BookMore({ bookData }) {
       <BookContent>
         <BookImageContainer>
           <a href={canonicalVolumeLink}>
-            <img src={imageLinks?.thumbnail} />
+            <img src={imageLinks?.thumbnail} alt="book thumbnail" />
           </a>
         </BookImageContainer>
         <BookInfo>

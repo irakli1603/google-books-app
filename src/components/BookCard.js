@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import arrayToList from "../utils/arrayToList";
+import useBooks from "../hooks/useBooks";
 
 const CardLayout = styled.div`
   display: flex;
@@ -49,20 +50,34 @@ const ColumnBlock = styled.div`
   }
 
   & > :nth-child(2) {
-    text-align: end;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
   }
 `;
 
-const ReadMore = styled.a`
+const Button = styled.a`
   text-decoration: underline;
   color: blue;
   cursor: pointer;
 `;
 
 function BookCard({ bookData }) {
-  const { id, searchInfo, volumeInfo } = bookData;
+  const { id, searchInfo, volumeInfo, isFav } = bookData;
 
-  const { title, subtitle, imageLinks, publishedDate, authors } = volumeInfo;
+  const {
+    title,
+    subtitle,
+    imageLinks,
+    publishedDate,
+    authors,
+    industryIdentifiers,
+  } = volumeInfo;
+
+  const { booksDispatch } = useBooks();
+
+  const bookId = industryIdentifiers[0].identifier;
+  const isFavorite = isFav;
 
   return (
     <CardLayout>
@@ -86,9 +101,22 @@ function BookCard({ bookData }) {
           <div>
             <strong>By:</strong> {arrayToList(authors)}
           </div>
-          <Link to={`book/${id}`} component={<ReadMore />}>
-            Read More
-          </Link>
+          <div>
+            <Button
+              onClick={() =>
+                booksDispatch(
+                  isFavorite
+                    ? { type: "REMOVE", payload: id }
+                    : { type: "ADD", payload: id }
+                )
+              }
+            >
+              {isFavorite ? "Remove from favorites" : "Add to favorites"}
+            </Button>
+            <Link to={`/book/${bookId}`} component={<Button />}>
+              Read More
+            </Link>
+          </div>
         </ColumnBlock>
       </CardInfo>
     </CardLayout>
