@@ -6,8 +6,6 @@ function Home() {
   const { bookStore } = useBooks();
   const { isLoading, books } = bookStore;
 
-  console.log(bookStore);
-
   return (
     <div>
       {isLoading ? <div>loading...</div> : ""}
