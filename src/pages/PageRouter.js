@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Book from "./Book";
 import Favorites from "./Favorites";
+import BookSearch from "./BookSearch";
 import Navbar from "../components/Navbar";
 import BooksProvider from "../providers/BooksProvider";
 
@@ -15,6 +16,7 @@ function PageRouter() {
           <Route path="/" element={<Home />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/book/:id" element={<Book />} />
+          <Route path="/search/:query" element={<BookSearch />} />
         </Routes>
       </Router>
     </BooksProvider>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import SearchField from "./SearchField";
 
 const StyledNavbar = styled.nav`
   width: 1100px;
@@ -14,6 +15,7 @@ function Navbar() {
     <StyledNavbar>
       <Link to="/">Home</Link>
       <Link to="/favorites">Favorites</Link>
+      <SearchField />
     </StyledNavbar>
   );
 }

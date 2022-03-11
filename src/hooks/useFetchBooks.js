@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import tweakBookObject from "../utils/tweakBookObject";
 
 function useFetchBooks(query = "javascript") {
   const [books, setBooks] = useState(null);
@@ -14,7 +15,7 @@ function useFetchBooks(query = "javascript") {
         setIsLoading(true);
 
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/volumes?q=${query}`,
+          `${process.env.REACT_APP_API_URL}/volumes?q=${encodeURI(query)}`,
           { signal }
         );
         const json = await response.json();
@@ -24,11 +25,12 @@ function useFetchBooks(query = "javascript") {
         if (json.totalItems === 0) {
           setError("book not found");
         } else {
-          setBooks(json.items);
+          const tweakedBooks = json.items.map((item) => tweakBookObject(item));
+          setBooks(tweakedBooks);
         }
-      } catch {
+      } catch (error) {
         setIsLoading(false);
-        throw new Error("Something went wrong while fetching books");
+        throw new Error(`Something went wrong while fetching books: ${error}`);
       }
     }
 
