@@ -1,31 +1,25 @@
 import { createContext, useEffect, useReducer } from "react";
 import useFetchBooks from "../hooks/useFetchBooks";
+import tweakBookObject from "../utils/tweakBookObject";
 
 export const FavoritesContext = createContext(null);
-
-function tweakBookObject(object) {
-  const result = {};
-
-  result["id"] = object.id;
-  result["isFav"] = false;
-  result["searchInfo"] = object.searchInfo;
-  result["volumeInfo"] = object.volumeInfo;
-
-  return result;
-}
 
 function reducer(state, action) {
   let changedBooks;
 
   switch (action.type) {
     case "ADD":
+      if (!state.books.some((item) => item.id === action.payload.id)) {
+        const favoriteBook = { ...action.payload, isFav: true };
+        return { ...state, books: [...state.books, favoriteBook] };
+      }
       changedBooks = state.books.map((item) =>
-        item.id === action.payload ? { ...item, isFav: true } : { ...item }
+        item.id === action.payload.id ? { ...item, isFav: true } : { ...item }
       );
       return { ...state, books: changedBooks };
     case "REMOVE":
       changedBooks = state.books.map((item) =>
-        item.id === action.payload ? { ...item, isFav: false } : { ...item }
+        item.id === action.payload.id ? { ...item, isFav: false } : { ...item }
       );
       return { ...state, books: changedBooks };
     case "INIT":
@@ -46,11 +40,7 @@ function BooksProvider({ children }) {
   const [bookStore, booksDispatch] = useReducer(reducer, bookObject);
 
   useEffect(() => {
-    if (books && books.length !== 0) {
-      const tweakedBooks = books.map((item) => tweakBookObject(item));
-      bookObject.books = tweakedBooks;
-    }
-
+    bookObject.books = books;
     bookObject.isLoading = isLoading;
     bookObject.error = error;
 

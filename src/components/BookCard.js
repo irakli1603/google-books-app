@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import arrayToList from "../utils/arrayToList";
 import useBooks from "../hooks/useBooks";
+import { useState } from "react";
 
 const CardLayout = styled.div`
   display: flex;
@@ -79,9 +80,20 @@ function BookCard({ bookData }) {
   const bookId = industryIdentifiers[0].identifier;
   const isFavorite = isFav;
 
+  const [favorite, setFavorite] = useState(isFavorite);
+
+  const handleClick = () => {
+    booksDispatch(
+      isFavorite
+        ? { type: "REMOVE", payload: bookData }
+        : { type: "ADD", payload: bookData }
+    );
+    setFavorite((prevValue) => !prevValue);
+  };
+
   return (
     <CardLayout>
-      <CardImage src={imageLinks.smallThumbnail} />
+      <CardImage src={imageLinks?.smallThumbnail} />
       <CardInfo>
         <Title>
           <cite>{title}</cite>
@@ -92,7 +104,9 @@ function BookCard({ bookData }) {
         </ColumnBlock>
         <Description>
           {searchInfo?.textSnippet ? (
-            searchInfo.textSnippet
+            <span
+              dangerouslySetInnerHTML={{ __html: searchInfo.textSnippet }}
+            />
           ) : (
             <i> - no description</i>
           )}
@@ -102,16 +116,8 @@ function BookCard({ bookData }) {
             <strong>By:</strong> {arrayToList(authors)}
           </div>
           <div>
-            <Button
-              onClick={() =>
-                booksDispatch(
-                  isFavorite
-                    ? { type: "REMOVE", payload: id }
-                    : { type: "ADD", payload: id }
-                )
-              }
-            >
-              {isFavorite ? "Remove from favorites" : "Add to favorites"}
+            <Button onClick={handleClick}>
+              {favorite ? "Remove from favorites" : "Add to favorites"}
             </Button>
             <Link to={`/book/${bookId}`} component={<Button />}>
               Read More
